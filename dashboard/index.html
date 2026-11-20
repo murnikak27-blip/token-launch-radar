@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Launch Radar — pre-token protocols ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="brand">
+    <span class="blip" aria-hidden="true"></span>
+    <div>
+      <h1>Token Launch Radar</h1>
+      <p class="tagline">Protocols with no token yet, priced as if they launched on today's record — and how to farm each one before they do.</p>
+    </div>
+  </div>
+  <dl class="stats" id="stats"></dl>
+</header>
+
+<section class="model" aria-labelledby="model-h">
+  <h2 id="model-h">How the implied value is derived</h2>
+  <p class="formula">implied value = TVL &times; peer multiple &times; momentum &times; tokenless age &times; chain reach</p>
+  <p>The peer multiple is the median market-cap / TVL ratio of protocols in the same category whose token
+  already trades, shrunk toward the global median when a category has few tokenized peers, with single
+  ratios winsorized so one micro-cap cannot price a category. Momentum reads the seven-day TVL change,
+  tokenless age rewards a long record at size with no token, and chain reach counts deployments. A
+  versioned child of a tokenized parent (an Aave V3 beside a trading AAVE) is discounted to 0.35&times;:
+  its value accrues to the parent's token. Custodial records — bridges, canonical bridges, liquid staking
+  and exchange balances — are left off the board: their TVL is other people's assets in custody. Every
+  figure below is computed from the snapshot alone; open a protocol to see its own arithmetic.</p>
+  <div class="multiples" id="multiples"></div>
+</section>
+
+<section class="controls" aria-label="Board controls">
+  <label class="ctl grow">Search
+    <input id="q" type="search" placeholder="Protocol or category…" autocomplete="off">
+  </label>
+  <label class="ctl">Category
+    <select id="cat"></select>
+  </label>
+  <label class="ctl">Chain
+    <select id="chain"></select>
+  </label>
+  <label class="ctl">Min TVL
+    <select id="mintvl">
+      <option value="0">Any size</option>
+      <option value="10000000">$10M+</option>
+      <option value="50000000">$50M+ (watchlist floor)</option>
+      <option value="250000000">$250M+</option>
+      <option value="1000000000">$1B+</option>
+    </select>
+  </label>
+  <label class="ctl check">
+    <input id="watch" type="checkbox"> Watchlist only
+  </label>
+  <label class="ctl">Sort
+    <select id="sort">
+      <option value="rank">Implied value</option>
+      <option value="tvl">TVL</option>
+      <option value="change">7-day change</option>
+      <option value="age">Tokenless age</option>
+      <option value="name">Name</option>
+    </select>
+  </label>
+</section>
+
+<main class="layout">
+  <div class="boardwrap">
+    <table class="board" id="board">
+      <thead>
+        <tr>
+          <th class="num">#</th><th>Protocol</th><th>Category</th><th class="num">TVL</th>
+          <th class="num">7d</th><th class="num">Implied value</th><th class="num">Age</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="empty" id="empty" hidden>No protocol matches those filters. Loosen one and the radar sweeps again.</p>
+  </div>
+  <aside class="detail" id="detail" aria-live="polite"></aside>
+</main>
+
+<footer>
+  <p id="foot"></p>
+  <p>An implied value is this radar's own claim about what a token would be worth if the protocol's record
+  stayed as it is. It is not a prediction that a token will be issued, and it is not make.fun's claim.</p>
+</footer>
+
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
